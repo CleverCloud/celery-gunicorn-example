@@ -1,9 +1,15 @@
+import os
 import time
 from celery import Celery
 
+# Use the Redis instance provided by a Clever Cloud Redis add-on if one is
+# linked (it exposes REDIS_URL), and otherwise fall back to the local
+# redis-server started by workers.sh.
+REDIS_URL = os.environ.get('REDIS_URL', 'redis://localhost:6379/0')
+
 celery_app = Celery('text_processor',
-                broker='redis://localhost:6379/0',
-                backend='redis://localhost:6379/0')
+                broker=REDIS_URL,
+                backend=REDIS_URL)
 
 @celery_app.task
 def process_text(text, operations=None):

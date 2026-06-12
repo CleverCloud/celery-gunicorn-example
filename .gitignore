@@ -1,1 +1,6 @@
 .clever.json
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.rdb
